@@ -98,66 +98,26 @@
 {% block content %}
 
     <ul>
-        <li>
-            <div class="sticky">
-                <h2>Idea Title #1</h2>
-                <p>Idea Content #1</p>
-                <div class="author">By Andrew</div>
-                <div class="email">andrew@mail.com</div>
-                <div class="rating">Ratings: 112 <a href="{{ url('idea/rate/') }}{{ 1 }}">Rate</a></div>
-                <div class="rating">Votes: 112 <a href="{{ url('idea/vote/') }}{{ 1 }}">Vote</a></div>
-            </div>
-        </li>
-        <li>
-           <div class="sticky">
-                <h2>Idea Title #1</h2>
-                <p>Idea Content #1</p>
-                <div class="author">By Andrew</div>
-                <div class="email">andrew@mail.com</div>
-                <div class="rating">Ratings: 112 <a href="{{ url('idea/rate/') }}{{ 1 }}">Rate</a></div>
-                <div class="rating">Votes: 112 <a href="{{ url('idea/vote/') }}{{ 1 }}">Vote</a></div>
-            </div>
-        </li>
-        <li>
-            <div class="sticky">
-                <h2>Idea Title #1</h2>
-                <p>Idea Content #1</p>
-                <div class="author">By Andrew</div>
-                <div class="email">andrew@mail.com</div>
-                <div class="rating">Ratings: 112 <a href="{{ url('idea/rate/') }}{{ 1 }}">Rate</a></div>
-                <div class="rating">Votes: 112 <a href="{{ url('idea/vote/') }}{{ 1 }}">Vote</a></div>
-            </div>
-        </li>  
-        <li>
-           <div class="sticky">
-                <h2>Idea Title #1</h2>
-                <p>Idea Content #1</p>
-                <div class="author">By Andrew</div>
-                <div class="email">andrew@mail.com</div>
-                <div class="rating">Ratings: 112 <a href="{{ url('idea/rate/') }}{{ 1 }}">Rate</a></div>
-                <div class="rating">Votes: 112 <a href="{{ url('idea/vote/') }}{{ 1 }}">Vote</a></div>
-            </div>
-        </li>    
-        <li>
-            <div class="sticky">
-                <h2>Idea Title #1</h2>
-                <p>Idea Content #1</p>
-                <div class="author">By Andrew</div>
-                <div class="email">andrew@mail.com</div>
-                <div class="rating">Ratings: 112 <a href="{{ url('idea/rate/') }}{{ 1 }}">Rate</a></div>
-                <div class="rating">Votes: 112 <a href="{{ url('idea/vote/') }}{{ 1 }}">Vote</a></div>
-            </div>
-        </li> 
-        <li>
-            <div class="sticky">
-                <h2>Idea Title #1</h2>
-                <p>Idea Content #1</p>
-                <div class="author">By Andrew</div>
-                <div class="email">andrew@mail.com</div>
-                <div class="rating">Ratings: 112 <a href="{{ url('idea/rate/') }}{{ 1 }}">Rate</a></div>
-                <div class="rating">Votes: 112 <a href="{{ url('idea/vote/') }}{{ 1 }}">Vote</a></div>
-            </div>
-        </li>           
+        {% for idea in ideas %}
+            <li>
+                <div class="sticky">
+                    <h2>Idea {{ idea.title() }}</h2>
+                    <p>{{ idea.description() }}</p>
+                    <div class="author">By {{ idea.author().name() }}</div>
+                    <div class="email">{{ idea.author().email() }}</div>
+                    <div class="rating">Ratings: {{ idea.averageRating() }}
+                    {{ form('idea/rate', 'method': 'GET') }}
+                        {{ text_field('id', 'type': 'hidden', 'value': idea.id().id(), 'style' : 'display:none' ) }}
+                        {{ submit_button('Rate') }}
+                    {{ end_form() }}
+                    <div class="rating">Votes: {{ idea.votes() }}
+                    {{ form('idea/vote', 'method': 'POST') }}
+                        {{ text_field('id', 'type': 'hidden', 'value': idea.id().id(), 'style' : 'display:none' ) }}
+                        {{ submit_button('Vote!') }}
+                    {{ end_form() }}
+                </div>
+            </li>
+        {% endfor %}
     </ul>
 
 {% endblock %}

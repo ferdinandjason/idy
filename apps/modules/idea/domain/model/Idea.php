@@ -9,16 +9,18 @@ class Idea
     private $description;
     private $author;
     private $ratings;
+    private $averageRating;
     private $votes;
     
-    public function __construct(IdeaId $id, $title, $description, Author $author)
+    public function __construct(IdeaId $id, $title, $description, Author $author, $votes = 0, $averageRating = 0)
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->author = $author;
         $this->ratings = array();
-        $this->votes = 0;
+        $this->averageRating = $averageRating;
+        $this->votes = $votes;
     }
 
     public function id() 
@@ -79,14 +81,7 @@ class Idea
 
     public function averageRating()
     {
-        $numberOfRatings = count($this->rating);
-        $totalRatings = 0;
-
-        foreach ($this->ratings as $rating) {
-            $totalRatings += $rating->value();
-        }
-
-        return $totalRatings / $numberOfRatings;
+        return $this->averageRating;
     }
 
     public static function makeIdea($title, $description, $author)
