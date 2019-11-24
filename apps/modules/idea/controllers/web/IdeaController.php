@@ -9,6 +9,7 @@ use Idy\Idea\Application\RateIdeaService;
 use Idy\Idea\Application\ViewAllIdeasService;
 use Idy\Idea\Application\VoteIdeaRequest;
 use Idy\Idea\Application\VoteIdeaService;
+use Idy\Idea\Controllers\Validators\CreateNewIdeaValidator;
 use Idy\Idea\Domain\Model\IdeaId;
 use Idy\Idea\Infrastructure\SqlIdeaRepository;
 use Phalcon\Mvc\Controller;
@@ -33,6 +34,18 @@ class IdeaController extends Controller
 
     public function addAction()
     {
+        if (!$this->request->isPost()) {
+            return $this->view->pick('add');
+        }
+        $validator = new CreateNewIdeaValidator();
+        $messages = $validator->validate($_POST);
+        if (count($messages)) {
+            foreach ($messages as $message) {
+                $this->flashSession->error($message->getMessage());
+            }
+            return $this->view->pick('add');
+        }
+
         $ideaRepository = Di::getDefault()->get('sql_idea_repository');
         $service = new CreateNewIdeaService($ideaRepository);
         $response = $service->execute(
