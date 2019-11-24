@@ -1,9 +1,10 @@
 <?php
 
+use Idy\Common\Events\DomainEventPublisher;
 use Phalcon\Mvc\View;
-use Phalcon\Mvc\View\Engine\Volt;
 use Idy\Idea\Infrastructure\SqlIdeaRepository;
 use Idy\Idea\Infrastructure\SqlRatingRepository;
+use Idy\Idea\Application\SendRatingNotificationService;
 
 $di['voltServiceMail'] = function($view) use ($di) {
 
@@ -50,6 +51,25 @@ $di['db'] = function () use ($di) {
         "dbname" => $config->database->dbname
     ]);
 };
+$di['mail'] = function () use ($di) {
+
+    $config = $di->get('config');
+
+    $mailDriver = $config->mail->driver;
+
+    return new $mailDriver([
+        'driver'     => 'smtp',
+        'host'       => $config->mail->smtp->server,
+        'port'       => $config->mail->smtp->port,
+        'encryption' => 'ssl',
+        'username'   => $config->mail->smtp->username,
+        'password'   => $config->mail->smtp->password,
+        'from' => [
+            'email'  => $config->mail->fromEmail,
+            'name'   => $config->mail->fromName,
+        ],
+    ]);
+};
 
 $di->setShared('sql_idea_repository', function() use ($di) {
     $repo = new SqlIdeaRepository($di);
@@ -62,3 +82,5 @@ $di->setShared('sql_rating_repository', function() use ($di) {
 
     return $repo;
 });
+
+DomainEventPublisher::instance()->subscribe(new SendRatingNotificationService());

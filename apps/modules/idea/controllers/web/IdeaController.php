@@ -11,12 +11,12 @@ use Idy\Idea\Application\VoteIdeaRequest;
 use Idy\Idea\Application\VoteIdeaService;
 use Idy\Idea\Controllers\Validators\CreateNewIdeaValidator;
 use Idy\Idea\Domain\Model\IdeaId;
-use Idy\Idea\Infrastructure\SqlIdeaRepository;
 use Phalcon\Mvc\Controller;
 use Phalcon\Di;
 
 class IdeaController extends Controller
 {
+
     public function indexAction()
     {
         $ideaRepository = Di::getDefault()->get('sql_idea_repository');

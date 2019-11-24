@@ -1,7 +1,9 @@
 {
     "require": {
         "vlucas/phpdotenv": "^3.3",
-        "ramsey/uuid": "^3.8"
+        "ramsey/uuid": "^3.8",
+        "phalcon-ext/mailer": "~2.0",
+        "phalcon/dd": "^1.1"
     },
     "require-dev": {
         "phalcon/ide-stubs": "^3.4"
