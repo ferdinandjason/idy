@@ -28,10 +28,10 @@ class SqlIdeaRepository implements IdeaRepository
                 "UPDATE idea SET title=:title, description=:description, author_name=:authorName, author_email=:authorEmail, votes=:votes WHERE id=:id"
             ),
             'find_by_id' => $this->connection->prepare(
-                "SELECT idea.id as id, idea.title as title, idea.description as description, idea.author_name as author_name, idea.author_email as author_name, idea.votes as votes, AVG(rating.value) as rating FROM idea LEFT JOIN rating ON idea.id = rating.idea_id  WHERE idea.id = :id GROUP BY idea.id"
+                "SELECT idea.id as id, idea.title as title, idea.description as description, idea.author_name as author_name, idea.author_email as author_email, idea.votes as votes, AVG(rating.value) as rating FROM idea LEFT JOIN rating ON idea.id = rating.idea_id  WHERE idea.id = :id GROUP BY idea.id"
             ),
             'find_all' => $this->connection->prepare(
-                "SELECT idea.id as id, idea.title as title, idea.description as description, idea.author_name as author_name, idea.author_email as author_name, idea.votes as votes, AVG(rating.value) as rating FROM idea LEFT JOIN rating ON idea.id = rating.idea_id GROUP BY idea.id"
+                "SELECT idea.id as id, idea.title as title, idea.description as description, idea.author_name as author_name, idea.author_email as author_email, idea.votes as votes, AVG(rating.value) as rating FROM idea LEFT JOIN rating ON idea.id = rating.idea_id GROUP BY idea.id"
             ),
         ];
 
