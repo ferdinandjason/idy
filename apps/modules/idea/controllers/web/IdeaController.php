@@ -58,7 +58,7 @@ class IdeaController extends Controller
         );
 
         $this->flashSession->error($response->message);
-        return $this->view->pick('home');
+        return $this->response->redirect('/');
     }
 
     public function voteAction()
